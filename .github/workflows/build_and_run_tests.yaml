@@ -1,4 +1,4 @@
-name: Build And Tests App
+name: Build And Test App
 
 on: [push]
 
