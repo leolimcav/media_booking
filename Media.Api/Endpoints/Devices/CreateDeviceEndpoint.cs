@@ -1,26 +1,23 @@
-using Media.Api.Entities;
+using Media.Api.Mappers;
 
 namespace Media.Api.Endpoints.Devices;
 
-public sealed class CreateDeviceEndpoint : Endpoint<CreateDeviceDto>
+public sealed class CreateDeviceEndpoint : Endpoint<CreateDeviceRequestDto, CreateDeviceResponseDto, DeviceMapper>
 {
     public override void Configure()
     {
-        Post("/api/devices");
+        Post("/devices");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CreateDeviceDto req, CancellationToken ct)
+    public override async Task HandleAsync(CreateDeviceRequestDto req, CancellationToken ct)
     {
         _ = req ?? throw new ArgumentNullException(nameof(req));
 
-        var device = new Device
-        {
-            Id = 1,
-            Name = req.name,
-            CreatedBy = "teste",
-        };
+        var device = Map.ToEntity(req);
 
-        await SendCreatedAtAsync("/api/devices", device.Id, HttpStatusCode.Created, true,cancellation: ct).ConfigureAwait(false);
+        var response = Map.FromEntity(device);
+
+        await SendCreatedAtAsync<GetDeviceByIdEndpoint>(new { deviceId = response.Id }, response, generateAbsoluteUrl: true, cancellation: ct).ConfigureAwait(false);
     }
 }
