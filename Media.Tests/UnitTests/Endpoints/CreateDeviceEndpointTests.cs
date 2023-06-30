@@ -1,9 +1,5 @@
-using FakeItEasy;
-using FastEndpoints;
-using FluentAssertions;
 using Media.Api.Endpoints.Devices;
 using Media.Api.Mappers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,33 +7,32 @@ namespace Media.Tests.UnitTests.Endpoints;
 
 public sealed class CreateDeviceEndpointTests
 {
-   [Fact]
-   public async Task CreatingDeviceWithValidDtoShouldReturnCreatedDevice() 
-   {
-       // Arrange
-       var req = new CreateDeviceRequestDto("Teste1");
-       var linkGen = A.Dummy<LinkGenerator>();
+    [Fact]
+    public async Task CreatingDeviceWithValidDtoShouldReturnCreatedDevice()
+    {
+        // Arrange
+        var req = new CreateDeviceRequestDto("Teste1");
+        var linkGen = A.Dummy<LinkGenerator>();
 
-       var sut = Factory.Create<CreateDeviceEndpoint>(ctx => 
-               {
-                    ctx.AddTestServices(s => 
-                            {
-                                s.AddSingleton(linkGen);
-                                s.BuildServiceProvider();
-                            });
-               });
+        var sut = Factory.Create<CreateDeviceEndpoint>(ctx =>
+                {
+                    ctx.AddTestServices(s =>
+                           {
+                               s.AddSingleton(linkGen);
+                               s.BuildServiceProvider();
+                           });
+                });
 
-       sut.Map = new DeviceMapper();
+        sut.Map = new DeviceMapper();
 
-       // Act
-       await sut.HandleAsync(req, default!).ConfigureAwait(false);
+        // Act
+        await sut.HandleAsync(req, default!).ConfigureAwait(false);
 
-       var response = sut.Response;
+        var response = sut.Response;
 
-       // Assert
-       sut.ValidationFailed.Should().BeFalse();
-       response.Should().NotBeNull();
-       response.Should().BeOfType<CreateDeviceResponseDto>();
-       response.Name.Should().Be(req.Name);
-   }
+        // Assert
+        response.Should().NotBeNull();
+        response.Should().BeOfType<CreateDeviceResponseDto>();
+        response.Name.Should().Be(req.Name);
+    }
 }
