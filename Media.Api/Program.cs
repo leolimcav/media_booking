@@ -1,8 +1,16 @@
+using Media.Api.Entities;
+using Media.Api.Extensions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
+builder.Services.AddDbContext<MediaDbContext>(c => 
+{
+    c.UseNpgsql(builder.Configuration.GetConnectionString("mediadb"));
+});
 
 var app = builder.Build();
 app.UseFastEndpoints(c => 
@@ -14,6 +22,7 @@ app.UseFastEndpoints(c =>
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerGen();
+    app.RunMigrations();
 }
 
 app.UseHttpsRedirection();
