@@ -15,6 +15,7 @@ public sealed class ReservationMapper : Mapper<CreateReservationRequestDto, Crea
     public override Reservation ToEntity(CreateReservationRequestDto r)
     {
         _ = r ?? throw new ArgumentNullException(nameof(r));
+
         return new Reservation 
         {
             Id = 1,
