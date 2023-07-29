@@ -4,13 +4,13 @@ using Media.Api.Mappers;
 
 namespace Media.Tests.UnitTests.Mappers;
 
-public sealed class ReservationMapperTests
+public sealed class CreateReservationMapperTests
 {
     [Fact]
     public void FromEntityShouldThrowArgumentNullExceptionWhenEntityIsNull()
     {
         // Arrange
-        var mapper = new ReservationMapper();
+        var mapper = new CreateReservationMapper();
 
         // Act
         var action = () => _ = mapper.FromEntity(default!);
@@ -24,7 +24,7 @@ public sealed class ReservationMapperTests
     public void ToEntityShouldThrowArgumentNullExceptionWhenDtoIsNull()
     {
         // Arrange
-        var mapper = new ReservationMapper();
+        var mapper = new CreateReservationMapper();
 
         // Act
         var action = () => _ = mapper.ToEntity(default!);
@@ -38,7 +38,7 @@ public sealed class ReservationMapperTests
     public void FromEntityShouldReturnADtoWhenEntityIsValid()
     {
         // Arrange
-        var mapper = new ReservationMapper();
+        var mapper = new CreateReservationMapper();
         var reservation = new Reservation 
         {
             Id = 1,
@@ -60,7 +60,7 @@ public sealed class ReservationMapperTests
     public void ToEntityShouldReturnAnEntityWhenDtoIsValid()
     {
         // Arrange
-        var mapper = new ReservationMapper();
+        var mapper = new CreateReservationMapper();
         var dto = new CreateReservationRequestDto("teste", "teste", "teste", DateTime.Now);
 
         // Act
