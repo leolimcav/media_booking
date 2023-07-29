@@ -3,13 +3,13 @@ using Media.Api.Entities;
 
 namespace Media.Api.Mappers;
 
-public sealed class ReservationMapper : Mapper<CreateReservationRequestDto, CreateReservationResponseDto, Reservation>
+public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto, CreateReservationResponseDto, Reservation>
 {
     public override CreateReservationResponseDto FromEntity(Reservation e)
     {
         _ = e ?? throw new ArgumentNullException(nameof(e));
 
-        return new CreateReservationResponseDto(1, e.Name, e.Device, e.Classroom, e.Date, e.CreatedAt);
+        return new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.CreatedAt);
     }
 
     public override Reservation ToEntity(CreateReservationRequestDto r)
@@ -18,11 +18,10 @@ public sealed class ReservationMapper : Mapper<CreateReservationRequestDto, Crea
 
         return new Reservation 
         {
-            Id = 1,
             Name = r.Name,
             Device = r.Device,
             Classroom = r.Classroom,
-            Date = r.Date,
+            Date = r.Date.ToUniversalTime(),
         };
     }
 }
