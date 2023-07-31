@@ -1,6 +1,5 @@
 using Media.Api.Entities;
 using Media.Api.Extensions;
-using Media.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,7 @@ builder.Services.AddDbContext<MediaDbContext>(c =>
     c.UseNpgsql(builder.Configuration.GetConnectionString("mediadb"));
 });
 
-builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddRepositories();
 
 builder.Services.AddCors(c => 
 {
