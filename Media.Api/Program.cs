@@ -12,7 +12,22 @@ builder.Services.AddDbContext<MediaDbContext>(c =>
     c.UseNpgsql(builder.Configuration.GetConnectionString("mediadb"));
 });
 
+builder.Services.AddRepositories();
+
+builder.Services.AddCors(c => 
+{
+    c.AddPolicy("defaultPolicy", p =>
+    {
+        p.AllowAnyOrigin();
+        p.AllowAnyHeader();
+        p.AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors();
+
 app.UseFastEndpoints(c => 
 {
     c.Endpoints.RoutePrefix = "api";
