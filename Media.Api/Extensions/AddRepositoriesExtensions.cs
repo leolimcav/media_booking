@@ -8,6 +8,6 @@ public static class AddRepositoriesExtensions
     {
         _ = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
 
-        serviceCollection.AddSingleton<IReservationRepository, ReservationRepository>();
+        serviceCollection.AddScoped<IReservationRepository, ReservationRepository>();
     }
 }
