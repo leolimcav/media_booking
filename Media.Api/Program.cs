@@ -2,6 +2,7 @@ using System.Globalization;
 using Media.Api.Entities;
 using Media.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 using Serilog;
 using Serilog.Events;
 
@@ -52,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerGen();
     app.RunMigrations();
 }
+
+app.MapMetrics();
 
 app.UseHttpsRedirection();
 

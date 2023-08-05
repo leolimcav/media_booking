@@ -15,9 +15,36 @@ services:
     volumes:
       - media_volume:/var/lib/postgresql/data
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-server
+    ports:
+      - "9090:9090"
+    expose:
+      - 9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      - media_network
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana-server
+    environment:
+      - GF_SERVER_HTTP_PORT=9001
+    ports:
+      - "9001:9001"
+    expose:
+      - 9001
+    volumes:
+      - grafana_volume:/var/lib/grafana
+    networks:
+      - media_network
+
 networks:
   media_network:
     driver: bridge
 
 volumes:
   media_volume:
+  grafana_volume: {}
