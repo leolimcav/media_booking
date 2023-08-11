@@ -26,6 +26,8 @@ services:
       - ./prometheus:/etc/prometheus
     networks:
       - media_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   grafana:
     image: grafana/grafana-oss

@@ -3,6 +3,7 @@ using Media.Api.Entities;
 using Media.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Prometheus;
+using Prometheus.DotNetRuntime;
 using Serilog;
 using Serilog.Events;
 
@@ -53,6 +54,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerGen();
     app.RunMigrations();
 }
+
+app.UseHttpMetrics();
+
+app.UseMetricServer();
 
 app.MapMetrics();
 
