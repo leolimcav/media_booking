@@ -1,20 +1,13 @@
-using System.Globalization;
 using Media.Api.Entities;
 using Media.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, services, configuration) =>
+builder.Host.UseSerilog((context, configuration) => 
 {
-    configuration
-    .ReadFrom.Configuration(context.Configuration)
-    .ReadFrom.Services(services)
-    .Enrich.FromLogContext()
-    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
-    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning);
+    configuration.ReadFrom.Configuration(context.Configuration);
 });
 
 // Add services to the container.
@@ -38,6 +31,8 @@ builder.Services.AddCors(c =>
 });
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseCors();
 
