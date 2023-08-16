@@ -23,7 +23,7 @@ services:
     expose:
       - 9090
     volumes:
-      - ./prometheus:/etc/prometheus
+      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
     networks:
       - media_network
     extra_hosts:

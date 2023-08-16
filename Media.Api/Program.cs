@@ -59,8 +59,6 @@ app.UseHttpMetrics();
 
 app.UseMetricServer();
 
-app.MapMetrics();
-
 app.UseHttpsRedirection();
 
 app.Run();
