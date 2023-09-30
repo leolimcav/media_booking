@@ -9,6 +9,8 @@ public sealed class ReservationRepositoryTests : IDisposable
     private readonly IReservationRepository _repository;
     private readonly MediaDbContext _dbContext;
 
+    private readonly DateTime date = DateTime.Now;
+
     public ReservationRepositoryTests()
     {
         var contextOptions = new DbContextOptionsBuilder<MediaDbContext>().UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
@@ -40,9 +42,11 @@ public sealed class ReservationRepositoryTests : IDisposable
         var reservation = new Reservation
         {
             Name = "Teste",
-            Date = DateTime.Now,
+            Date = DateOnly.FromDateTime(this.date),
             Classroom = "class",
-            Device = "dev", 
+            Device = "dev",
+            StartTime = TimeOnly.FromDateTime(this.date),
+            EndTime = TimeOnly.FromDateTime(this.date.AddHours(2))
         };
 
         // Act
@@ -59,7 +63,9 @@ public sealed class ReservationRepositoryTests : IDisposable
             Name = "teste",
             Classroom = "teste",
             Device = "teste",
-            Date = DateTime.Now,
+            Date = DateOnly.FromDateTime(this.date),
+            StartTime = TimeOnly.FromDateTime(this.date),
+            EndTime = TimeOnly.FromDateTime(this.date.AddHours(2))
         });
         _ = this._dbContext.SaveChanges();
     }

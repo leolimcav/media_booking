@@ -8,5 +8,9 @@ public class Reservation : Entity
 
     public string Classroom { get; set; } = string.Empty;
 
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
+
+    public TimeOnly StartTime { get; set; }
+
+    public TimeOnly EndTime { get; set; }
 }

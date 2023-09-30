@@ -9,7 +9,7 @@ public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto
     {
         _ = e ?? throw new ArgumentNullException(nameof(e));
 
-        return new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.CreatedAt);
+        return new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.StartTime, e.EndTime, e.CreatedAt);
     }
 
     public override Reservation ToEntity(CreateReservationRequestDto r)
@@ -21,7 +21,9 @@ public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto
             Name = r.Name,
             Device = r.Device,
             Classroom = r.Classroom,
-            Date = r.Date.ToUniversalTime(),
+            Date = r.Date,
+            StartTime = r.StartTime,
+            EndTime = r.EndTime
         };
     }
 }
