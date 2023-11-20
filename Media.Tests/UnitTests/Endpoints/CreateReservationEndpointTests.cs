@@ -32,7 +32,7 @@ public sealed class CreateReservationEndpointTests
 
         sut.Map = mapper;
 
-        var entity = mapper.ToEntity(req);
+        var entity = await mapper.ToEntityAsync(req, CancellationToken.None).ConfigureAwait(false);
         
         A.CallTo(() => repository.CreateAsync(entity, default!)).Returns(entity);
 

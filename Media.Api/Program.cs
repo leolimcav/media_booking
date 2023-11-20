@@ -27,7 +27,6 @@ builder.Services.AddCors(c =>
         p.AllowAnyOrigin();
         p.AllowAnyHeader();
         p.AllowAnyMethod();
-        
     });
 });
 
@@ -37,8 +36,6 @@ app.UseSerilogRequestLogging();
 
 app.UseCors();
 
-=======
->>>>>>> refact: adjust repository extensions. validator and cors
 app.UseFastEndpoints(c => 
 {
     c.Endpoints.RoutePrefix = "api";
@@ -52,7 +49,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors();
 
 app.Run();

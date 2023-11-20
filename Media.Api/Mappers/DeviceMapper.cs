@@ -6,29 +6,29 @@ namespace Media.Api.Mappers;
 
 public sealed class DeviceMapper : Mapper<CreateDeviceRequestDto, CreateDeviceResponseDto, Device>
 {
-  public override Device ToEntity(CreateDeviceRequestDto r) 
+  public override Task<Device> ToEntityAsync(CreateDeviceRequestDto r, CancellationToken ct = default!) 
   {
     _ = r ?? throw new ArgumentNullException(nameof(r));
 
-    return new Device 
+    return Task.FromResult(new Device 
     {
       Id = RandomNumberGenerator.GetInt32(100),
       Name = r.Name,
       CreatedBy = "Teste"
-    };
+    });
   }
 
-  public override CreateDeviceResponseDto FromEntity(Device e)
+  public override Task<CreateDeviceResponseDto> FromEntityAsync(Device e, CancellationToken ct = default!)
   {
     _ = e ?? throw new ArgumentNullException(nameof(e));
 
-    return new CreateDeviceResponseDto
+    return Task.FromResult(new CreateDeviceResponseDto
     (
       e.Id,
       e.Name,
       e.CreatedBy,
       e.CreatedAt,
       e.UpdatedAt
-    );
+    ));
   }
 }
