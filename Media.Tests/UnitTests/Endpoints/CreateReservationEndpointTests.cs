@@ -8,11 +8,13 @@ namespace Media.Tests.UnitTests.Endpoints;
 
 public sealed class CreateReservationEndpointTests
 {
+    private readonly DateTime date = DateTime.Now;
+
     [Fact]
     public async Task CreateReservationShouldReturnCreatedReservation()
     {
         // Arrange
-        var req = new CreateReservationRequestDto("teste", "teste", "teste", DateTime.Now);
+        var req = new CreateReservationRequestDto("teste", "teste", "teste", DateOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date.AddHours(2)));
         var linkGen = A.Dummy<LinkGenerator>();
         var repository = A.Fake<IReservationRepository>();
 

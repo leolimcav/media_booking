@@ -6,6 +6,8 @@ namespace Media.Tests.UnitTests.Mappers;
 
 public sealed class CreateReservationMapperTests
 {
+    private readonly DateTime date = DateTime.Now;
+
     [Fact]
     public void FromEntityShouldThrowArgumentNullExceptionWhenEntityIsNull()
     {
@@ -45,7 +47,9 @@ public sealed class CreateReservationMapperTests
             Name = "teste",
             Device = "teste",
             Classroom = "teste",
-            Date = DateTime.Now,
+            Date = DateOnly.FromDateTime(this.date),
+            StartTime = TimeOnly.FromDateTime(this.date),
+            EndTime = TimeOnly.FromDateTime(this.date.AddHours(2))
         };
 
         // Act
@@ -61,7 +65,7 @@ public sealed class CreateReservationMapperTests
     {
         // Arrange
         var mapper = new CreateReservationMapper();
-        var dto = new CreateReservationRequestDto("teste", "teste", "teste", DateTime.Now);
+        var dto = new CreateReservationRequestDto("teste", "teste", "teste", DateOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date.AddHours(2)));
 
         // Act
         var entity = mapper.ToEntity(dto);
