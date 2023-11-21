@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
   deviceInputErrors: string[] = [];
   classroomInputErrors: string[] = [];
   dateInputErrors: string[] = [];
+  startTimeInputErrors: string[] = [];
+  endTimeInputErrors: string[] = [];
 
   reservations: Reservation[] = [];
 
@@ -21,7 +23,9 @@ export class AppComponent implements OnInit {
     name: '',
     device: '',
     classroom: '',
-    date: ''
+    date: '',
+    startTime: '',
+    endTime: ''
   });
 
   constructor(
@@ -35,6 +39,8 @@ export class AppComponent implements OnInit {
 
   createReservation(): void {
     const payload = this.form.value;
+    payload.startTime = payload.startTime?.concat(":00");
+    payload.endTime = payload.endTime?.concat(":00");
     console.log(payload);
     this.httpClient.post<CreateReservation>("https://localhost:3001/api/reservations", payload).subscribe(
       (r: CreateReservation) => console.log(r),
@@ -51,6 +57,8 @@ export class AppComponent implements OnInit {
     this.deviceInputErrors = errors.device;
     this.classroomInputErrors = errors.classroom;
     this.dateInputErrors = errors.date;
+    this.startTimeInputErrors = errors.startTime;
+    this.endTimeInputErrors = errors.endTime;
   }
 
   getReservations() : Observable<Reservation[]> {
@@ -63,6 +71,8 @@ interface CreateReservation {
   device: string;
   classroom: string;
   date: string;
+  startTime: string;
+  endTime: string;
 }
 
 interface Reservation {
@@ -71,4 +81,6 @@ interface Reservation {
   device: string;
   classroom: string;
   date: string;
+  startTime: string;
+  endTime: string;
 }

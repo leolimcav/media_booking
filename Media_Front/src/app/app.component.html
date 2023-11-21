@@ -1,62 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Reservar</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <main class="flex flex-auto flex-col place-items-center items-center h-screen w-screen gap-10">
-      <h1 class="text-5xl font-bold text-blue-500 mt-10">Reservas</h1>
-      <form class="flex flex-col items-center w-5/12 gap-2" [formGroup]="form" (ngSubmit)="createReservation()">
-        <div class="flex flex-col w-full">
-          <label class="text-xl" for="name">Nome</label>
-          <input class="form-input rounded" placeholder="Fulano de Tal" type="text" name="name" formControlName="name">
-          <div *ngFor="let i of nameInputErrors">
-            <span class="text-rose-600 font-semibold">{{ i }}</span>
-          </div>
+
+<head>
+  <title>Reservar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <main class="flex flex-auto flex-col place-items-center items-center h-screen w-screen gap-10">
+    <h1 class="text-5xl font-bold text-blue-500 mt-10">Reservas</h1>
+    <form class="flex flex-col items-center w-5/12 gap-2" [formGroup]="form" (ngSubmit)="createReservation()">
+      <div class="flex flex-col w-full">
+        <label class="text-xl" for="name">Nome</label>
+        <input class="form-input rounded" placeholder="Fulano de Tal" id="name" type="text" name="name"
+          formControlName="name" autocomplete="off">
+        <div *ngFor="let i of nameInputErrors">
+          <span class="text-rose-600 font-semibold">{{ i }}</span>
         </div>
-        <div class="flex flex-col w-full">
-          <label class="text-xl" for="device">Mídia</label>
-          <input class="form-input rounded" placeholder="Projetor 123" type="text" name="device" formControlName="device">
-          <div *ngFor="let i of deviceInputErrors">
-            <span class="text-rose-600 font-semibold">{{ i }}</span>
-          </div>
+      </div>
+      <div class="flex flex-col w-full">
+        <label class="text-xl" for="device">Mídia</label>
+        <input class="form-input rounded" placeholder="Projetor 123" id="device" type="text" name="device"
+          formControlName="device">
+        <div *ngFor="let i of deviceInputErrors">
+          <span class="text-rose-600 font-semibold">{{ i }}</span>
         </div>
-        <div class="flex flex-col w-full">
-          <label class="text-xl" for="classroom">Sala</label>
-          <input class="form-input rounded" placeholder="9A" type="text" name="classroom" formControlName="classroom">
-          <div *ngFor="let i of classroomInputErrors">
-            <span class="text-rose-600 font-semibold">{{ i }}</span>
-          </div>
+      </div>
+      <div class="flex flex-col w-full">
+        <label class="text-xl" for="classroom">Sala</label>
+        <input class="form-input rounded" placeholder="9A" id="classroom" type="text" name="classroom"
+          formControlName="classroom">
+        <div *ngFor="let i of classroomInputErrors">
+          <span class="text-rose-600 font-semibold">{{ i }}</span>
         </div>
-        <div class="flex flex-col w-full">
-          <label class="text-xl" for="date">Data e Horário</label>
-          <input class="form-input rounded" type="datetime-local" name="date" formControlName="date">
+      </div>
+      <div class="flex flex-row w-full justify-between">
+        <div class="flex flex-col w-1/2">
+          <label class="text-xl" for="date">Data</label>
+          <input class="form-input rounded" id="date" type="date" name="date" formControlName="date">
           <div *ngFor="let i of dateInputErrors">
             <span class="text-rose-600 font-semibold">{{ i }}</span>
           </div>
         </div>
-        <button class="self-end bg-blue-500 w-20 h-10 rounded font-semibold text-white" type="submit">Reservar</button>
-      </form>
-      <table class="table-auto w-3/5 border border-black border-collapse">
-        <thead class="border border-black h-10">
-          <th class="border border-black">#</th>
-          <th class="border border-black">Nome</th>
-          <th class="border border-black">Mídia</th>
-          <th class="border border-black">Sala</th>
-          <th class="border border-black">Data</th>
-        </thead>
-        <tbody class="border border-black" *ngFor="let i of reservations; index as ix">
-          <tr class="border border-black text-center">
-            <td class="border border-black">{{ ix+1 }}</td>
-            <td class="border border-black">{{ i.name }}</td>
-            <td class="border border-black">{{ i.device }}</td>
-            <td class="border border-black">{{ i.classroom }}</td>
-            <td class="border border-black">{{ i.date }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </main>
-  </body>
+        <div class="flex flex-col w-1/4 ml-2 mr-2 flex-shrink-1">
+          <label class="text-xl" for="startTime">Hora Inicial</label>
+          <input class="form-input rounded" id="startTime" type="time" name="startTime" formControlName="startTime">
+          <div *ngFor="let i of dateInputErrors">
+            <span class="text-rose-600 font-semibold">{{ i }}</span>
+          </div>
+        </div>
+        <div class="flex flex-col w-1/4 flex-shrink-1">
+          <label class="text-xl" for="endTime">Hora Final</label>
+          <input class="form-input rounded" id="endTime" type="time" name="endTime" formControlName="endTime">
+          <div *ngFor="let i of dateInputErrors">
+            <span class="text-rose-600 font-semibold">{{ i }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="self-end bg-blue-500 w-20 h-10 rounded font-semibold text-white" type="submit">Reservar</button>
+    </form>
+    <table class="table-auto w-3/5 border border-black border-collapse">
+      <thead class="border border-black h-10">
+        <th class="border border-black">#</th>
+        <th class="border border-black">Nome</th>
+        <th class="border border-black">Mídia</th>
+        <th class="border border-black">Sala</th>
+        <th class="border border-black">Data</th>
+        <th class="border border-black">Hora Inicial</th>
+        <th class="border border-black">Hora Final</th>
+      </thead>
+      <tbody class="border border-black" *ngFor="let i of reservations; index as ix">
+        <tr class="border border-black text-center">
+          <td class="border border-black">{{ ix+1 }}</td>
+          <td class="border border-black">{{ i.name }}</td>
+          <td class="border border-black">{{ i.device }}</td>
+          <td class="border border-black">{{ i.classroom }}</td>
+          <td class="border border-black">{{ i.date }}</td>
+          <td class="border border-black">{{ i.startTime }}</td>
+          <td class="border border-black">{{ i.endTime }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+
 </html>
