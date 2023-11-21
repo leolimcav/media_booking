@@ -5,18 +5,18 @@ namespace Media.Api.Mappers;
 
 public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto, CreateReservationResponseDto, Reservation>
 {
-    public override CreateReservationResponseDto FromEntity(Reservation e)
+    public override Task<CreateReservationResponseDto> FromEntityAsync(Reservation e, CancellationToken ct = default!)
     {
         _ = e ?? throw new ArgumentNullException(nameof(e));
 
-        return new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.StartTime, e.EndTime, e.CreatedAt);
+        return Task.FromResult(new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.StartTime, e.EndTime, e.CreatedAt));
     }
 
-    public override Reservation ToEntity(CreateReservationRequestDto r)
+    public override Task<Reservation> ToEntityAsync(CreateReservationRequestDto r, CancellationToken ct = default!)
     {
         _ = r ?? throw new ArgumentNullException(nameof(r));
 
-        return new Reservation 
+        return Task.FromResult(new Reservation 
         {
             Name = r.Name,
             Device = r.Device,
@@ -24,6 +24,6 @@ public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto
             Date = r.Date,
             StartTime = r.StartTime,
             EndTime = r.EndTime
-        };
+        });
     }
 }

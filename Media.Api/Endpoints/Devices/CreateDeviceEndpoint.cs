@@ -14,9 +14,9 @@ public sealed class CreateDeviceEndpoint : Endpoint<CreateDeviceRequestDto, Crea
     {
         _ = req ?? throw new ArgumentNullException(nameof(req));
 
-        var device = Map.ToEntity(req);
+        var device = await Map.ToEntityAsync(req, ct).ConfigureAwait(false);
 
-        var response = Map.FromEntity(device);
+        var response = await Map.FromEntityAsync(device, ct).ConfigureAwait(false);
 
         await SendCreatedAtAsync<GetDeviceByIdEndpoint>(new { deviceId = response.Id }, response, generateAbsoluteUrl: true, cancellation: ct).ConfigureAwait(false);
     }

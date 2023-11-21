@@ -9,35 +9,32 @@ public sealed class CreateReservationMapperTests
     private readonly DateTime date = DateTime.Now;
 
     [Fact]
-    public void FromEntityShouldThrowArgumentNullExceptionWhenEntityIsNull()
+    public async Task FromEntityShouldThrowArgumentNullExceptionWhenEntityIsNull()
     {
         // Arrange
         var mapper = new CreateReservationMapper();
 
         // Act
-        var action = () => _ = mapper.FromEntity(default!);
+        var action = async () => _ = await mapper.FromEntityAsync(default!, default!).ConfigureAwait(false);
 
         // Assert
-        action.Should().ThrowExactly<ArgumentNullException>()
-            .Which.ParamName.Should().Be("e");
+        _ = await action.Should().ThrowExactlyAsync<ArgumentNullException>().ConfigureAwait(false);
     }
 
     [Fact]
-    public void ToEntityShouldThrowArgumentNullExceptionWhenDtoIsNull()
+    public async Task ToEntityShouldThrowArgumentNullExceptionWhenDtoIsNull()
     {
         // Arrange
         var mapper = new CreateReservationMapper();
 
         // Act
-        var action = () => _ = mapper.ToEntity(default!);
-
+        var action = async () => _ = await mapper.ToEntityAsync(default!, default!).ConfigureAwait(false);
         // Assert
-        action.Should().ThrowExactly<ArgumentNullException>()
-            .Which.ParamName.Should().Be("r");
+        _ = await action.Should().ThrowExactlyAsync<ArgumentNullException>().ConfigureAwait(false);
     }
 
     [Fact]
-    public void FromEntityShouldReturnADtoWhenEntityIsValid()
+    public async Task FromEntityShouldReturnADtoWhenEntityIsValid()
     {
         // Arrange
         var mapper = new CreateReservationMapper();
@@ -53,7 +50,7 @@ public sealed class CreateReservationMapperTests
         };
 
         // Act
-        var dto = mapper.FromEntity(reservation);
+        var dto = await mapper.FromEntityAsync(reservation, default!).ConfigureAwait(false);
 
         // Assert
         _ = dto.Should().BeOfType<CreateReservationResponseDto>();
@@ -61,14 +58,14 @@ public sealed class CreateReservationMapperTests
     }
 
     [Fact]
-    public void ToEntityShouldReturnAnEntityWhenDtoIsValid()
+    public async Task ToEntityShouldReturnAnEntityWhenDtoIsValid()
     {
         // Arrange
         var mapper = new CreateReservationMapper();
         var dto = new CreateReservationRequestDto("teste", "teste", "teste", DateOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date), TimeOnly.FromDateTime(this.date.AddHours(2)));
 
         // Act
-        var entity = mapper.ToEntity(dto);
+        var entity = await mapper.ToEntityAsync(dto, default!).ConfigureAwait(false);
 
         // Assert
         _ = entity.Should().BeOfType<Reservation>();

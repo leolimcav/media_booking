@@ -22,7 +22,7 @@ builder.Services.AddRepositories();
 
 builder.Services.AddCors(c => 
 {
-    c.AddPolicy("defaultPolicy", p =>
+    c.AddDefaultPolicy(p =>
     {
         p.AllowAnyOrigin();
         p.AllowAnyHeader();

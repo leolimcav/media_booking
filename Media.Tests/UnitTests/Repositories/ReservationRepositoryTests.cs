@@ -6,7 +6,7 @@ namespace Media.Tests.UnitTests.Repositories;
 
 public sealed class ReservationRepositoryTests : IDisposable
 {
-    private readonly IReservationRepository _repository;
+    private readonly ReservationRepository _repository;
     private readonly MediaDbContext _dbContext;
 
     private readonly DateTime date = DateTime.Now;

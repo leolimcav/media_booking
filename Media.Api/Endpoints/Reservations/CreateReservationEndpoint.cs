@@ -22,13 +22,13 @@ public sealed class CreateReservationEndpoint : Endpoint<CreateReservationReques
     {
         _ = req ?? throw new ArgumentNullException(nameof(req));
 
-        var reservation = Map.ToEntity(req);
+        var reservation = await Map.ToEntityAsync(req, ct).ConfigureAwait(false);
 
         var createdReservation = await this._repository
             .CreateAsync(reservation, ct)
             .ConfigureAwait(false);
 
-        var res = Map.FromEntity(createdReservation);
+        var res = await Map.FromEntityAsync(createdReservation, ct).ConfigureAwait(false);
 
         await SendCreatedAtAsync("/reservations", new { res.Id }, res, cancellation: ct).ConfigureAwait(false);
     }
