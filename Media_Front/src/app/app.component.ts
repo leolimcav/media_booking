@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -38,14 +38,19 @@ export class AppComponent implements OnInit {
   }
 
   createReservation(): void {
-    const payload = this.form.value;
-    payload.startTime = payload.startTime?.concat(":00");
-    payload.endTime = payload.endTime?.concat(":00");
-    console.log(payload);
-    this.httpClient.post<CreateReservation>("https://localhost:3001/api/reservations", payload).subscribe(
-      (r: CreateReservation) => console.log(r),
-      (err: HttpErrorResponse) => this.handleError(err),
-      () => console.log("Request completed"));
+    const formData = this.form.value;
+    const startDate = new Date(`${formData.date}T${formData.startTime}:00`).toUTCString();
+    const endDate = new Date(`${formData.date}T${formData.endTime}:00`).toUTCString();
+
+    console.log(startDate, endDate);
+
+    const createReservation = { ...formData, startDate, endDate }
+    console.log(createReservation);
+    this.httpClient.post<CreateReservation>("https://localhost:3001/api/reservations", createReservation)
+      .subscribe(
+        (r: CreateReservation) => console.log(r),
+        (err: HttpErrorResponse) => this.handleError(err),
+        () => console.log("Request completed"));
     this.form.reset();
   }
 
@@ -62,7 +67,20 @@ export class AppComponent implements OnInit {
   }
 
   getReservations() : Observable<Reservation[]> {
-    return this.httpClient.get<Reservation[]>("https://localhost:3001/api/reservations");
+    return this.httpClient.get<GetReservationResponse[]>("https://localhost:3001/api/reservations")
+      .pipe(
+        map(r => {
+          const reservations : Reservation[] = r.map(rs => {
+            const [ startDate, _ ] = rs.startDate.split('T');
+
+            return { ...rs, date: startDate, startTime: rs.startDate, endTime: rs.endDate }
+          });
+
+          console.log(reservations);
+
+          return reservations;
+        })
+    );
   }
 }
 
@@ -70,9 +88,17 @@ interface CreateReservation {
   name: string;
   device: string;
   classroom: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  startDate: string;
+  endDate: string;
+}
+
+interface GetReservationResponse {
+  id: number;
+  name: string;
+  device: string;
+  classroom: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface Reservation {

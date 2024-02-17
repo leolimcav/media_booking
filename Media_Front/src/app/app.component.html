@@ -76,9 +76,9 @@
           <td class="border border-black">{{ i.name }}</td>
           <td class="border border-black">{{ i.device }}</td>
           <td class="border border-black">{{ i.classroom }}</td>
-          <td class="border border-black">{{ i.date }}</td>
-          <td class="border border-black">{{ i.startTime }}</td>
-          <td class="border border-black">{{ i.endTime }}</td>
+          <td class="border border-black">{{ i.date | date:'dd/MM/yy' }}</td>
+          <td class="border border-black">{{ i.startTime | date:'HH:mm' }}</td>
+          <td class="border border-black">{{ i.endTime | date:'HH:mm' }}</td>
         </tr>
       </tbody>
     </table>

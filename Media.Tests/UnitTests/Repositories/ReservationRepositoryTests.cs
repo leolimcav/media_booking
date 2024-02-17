@@ -9,7 +9,7 @@ public sealed class ReservationRepositoryTests : IDisposable
     private readonly ReservationRepository _repository;
     private readonly MediaDbContext _dbContext;
 
-    private readonly DateTime date = DateTime.Now;
+    private readonly DateTime date = DateTime.UtcNow;
 
     public ReservationRepositoryTests()
     {
@@ -42,11 +42,10 @@ public sealed class ReservationRepositoryTests : IDisposable
         var reservation = new Reservation
         {
             Name = "Teste",
-            Date = DateOnly.FromDateTime(this.date),
+            StartDate = this.date,
+            EndDate = this.date.AddHours(2),
             Classroom = "class",
-            Device = "dev",
-            StartTime = TimeOnly.FromDateTime(this.date),
-            EndTime = TimeOnly.FromDateTime(this.date.AddHours(2))
+            Device = "dev"
         };
 
         // Act
@@ -63,9 +62,8 @@ public sealed class ReservationRepositoryTests : IDisposable
             Name = "teste",
             Classroom = "teste",
             Device = "teste",
-            Date = DateOnly.FromDateTime(this.date),
-            StartTime = TimeOnly.FromDateTime(this.date),
-            EndTime = TimeOnly.FromDateTime(this.date.AddHours(2))
+            StartDate = this.date,
+            EndDate = this.date.AddHours(2)
         });
         _ = this._dbContext.SaveChanges();
     }

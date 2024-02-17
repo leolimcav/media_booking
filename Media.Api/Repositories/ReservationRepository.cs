@@ -29,6 +29,8 @@ public sealed class ReservationRepository : IReservationRepository
     {
         return await this._context!
             .Reservations!
+            .Where(r => r.StartDate.Date == DateTime.UtcNow.Date)
+            .OrderBy(r => r.StartDate)
             .AsNoTracking()
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
