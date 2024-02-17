@@ -25,12 +25,20 @@ public sealed class CreateReservationRequestDtoValidator : Validator<CreateReser
             .MinimumLength(2)
             .WithMessage("classroom should have at least 2 characters");
 
-        RuleFor(x => x.Date)
+        RuleFor(x => x.StartDate)
             .NotEmpty()
-            .WithMessage("date should not be empty");
+            .WithMessage("start date should not be empty")
+            .GreaterThanOrEqualTo(DateTime.UtcNow)
+            .WithMessage("start date should be greater than or equal to today");
         
-        RuleFor(x => x.Date)
-            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow))
-            .WithMessage("date should be greater than or equal to today");
+        RuleFor(x => x.EndDate)
+            .NotEmpty()
+            .WithMessage("end date should not be empty")
+            .GreaterThanOrEqualTo(DateTime.UtcNow)
+            .WithMessage("end date should be greater than or equal to today");
+        
+        RuleFor(x => x.EndDate.Day)
+            .Equal(x => x.StartDate.Day)
+            .WithMessage("end date day should be equal to start date day");
     }
 }

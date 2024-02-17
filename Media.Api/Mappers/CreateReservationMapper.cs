@@ -9,7 +9,7 @@ public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto
     {
         _ = e ?? throw new ArgumentNullException(nameof(e));
 
-        return Task.FromResult(new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.Date, e.StartTime, e.EndTime, e.CreatedAt));
+        return Task.FromResult(new CreateReservationResponseDto(e.Id, e.Name, e.Device, e.Classroom, e.StartDate, e.EndDate, e.CreatedAt));
     }
 
     public override Task<Reservation> ToEntityAsync(CreateReservationRequestDto r, CancellationToken ct = default!)
@@ -21,9 +21,8 @@ public sealed class CreateReservationMapper : Mapper<CreateReservationRequestDto
             Name = r.Name,
             Device = r.Device,
             Classroom = r.Classroom,
-            Date = r.Date,
-            StartTime = r.StartTime,
-            EndTime = r.EndTime
+            StartDate = r.StartDate.ToUniversalTime(),
+            EndDate = r.EndDate.ToUniversalTime()
         });
     }
 }

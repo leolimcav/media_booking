@@ -23,8 +23,8 @@ public sealed class GetReservationsEndpoint : EndpointWithoutRequest<IEnumerable
             .GetReservations(ct)
             .ConfigureAwait(false);
 
-        var response = reservations.Select(e => new GetReservationsResponseDto(e.Name, e.Device, e.Classroom, e.Date, e.StartTime, e.EndTime));
-
+        var response = reservations.Select(e => new GetReservationsResponseDto(e.Name, e.Device, e.Classroom, e.StartDate.ToLocalTime(), e.EndDate.ToLocalTime()));
+        
         await SendOkAsync(response, cancellation: ct).ConfigureAwait(false);
     }
 }
