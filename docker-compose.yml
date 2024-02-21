@@ -4,8 +4,6 @@ services:
     container_name: media_db
     ports:
       - "5432:5432"
-    expose:
-      - 5432
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
@@ -14,6 +12,23 @@ services:
       - media_network
     volumes:
       - media_volume:/var/lib/postgresql/data
+
+  media_api:
+    container_name: media_api
+    image: leolimcav/media-api:1.0
+    build:
+      context: .
+      dockerfile: docker/api.dockerfile.yml
+    ports:
+      - "3000:80"
+      - "3001:443"
+    environment:
+      - ASPNETCORE_HTTPS_PORTS=443
+      - ASPNETCORE_HTTP_PORTS=80
+    networks:
+        - media_network
+    depends_on:
+      - media_db
 
 networks:
   media_network:
