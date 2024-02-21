@@ -1,0 +1,20 @@
+FROM node:lts-slim as build-app
+
+WORKDIR /app
+
+COPY ./Media_Front/package.json .
+COPY ./Media_Front/package-lock.json .
+
+RUN npm install
+
+COPY ./Media_Front ./
+
+RUN npm run ng build
+
+FROM nginx:stable
+
+WORKDIR /usr/share/nginx/html
+
+COPY --from=build-app /app/dist/media-front/ ./
+
+EXPOSE 80

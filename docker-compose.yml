@@ -29,6 +29,19 @@ services:
         - media_network
     depends_on:
       - media_db
+        
+  media_front:
+    container_name: media_front
+    image: leolimcav/media-front:1.0
+    build:
+      context: .
+      dockerfile: docker/front.dockerfile.yml
+    ports:
+      - "8080:80"
+    networks:
+      - media_network
+    depends_on:
+      - media_api
 
 networks:
   media_network:
