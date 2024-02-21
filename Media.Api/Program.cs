@@ -30,6 +30,8 @@ builder.Services.AddCors(c =>
     });
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();

@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-#nullable disable
 
+[assembly:CLSCompliant(false)]
 namespace Media.Api.Migrations
 {
     [DbContext(typeof(MediaDbContext))]
