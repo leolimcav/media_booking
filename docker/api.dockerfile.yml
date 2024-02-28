@@ -14,7 +14,4 @@ WORKDIR /app
 
 COPY --from=build-env /app/bin/Release/net6.0/ .
 
-EXPOSE 3000
-EXPOSE 3001
-
 ENTRYPOINT ["dotnet", "Media.Api.dll"]

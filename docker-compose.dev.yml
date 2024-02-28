@@ -2,6 +2,8 @@ services:
   media_db:
     image: postgres:latest
     container_name: media_db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
@@ -14,21 +16,32 @@ services:
   media_api:
     container_name: media_api
     image: leolimcav/media-api:1.0
-    environment:
-      - ASPNETCORE_HTTPS_PORTS=3001
-      - ASPNETCORE_HTTP_PORTS=3000
+    build:
+      context: .
+      dockerfile: docker/api.dockerfile.yml
     ports:
-      - "3001:3001"
+      - "3000:80"
+      - "3001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/testapp.pfx
     networks:
         - media_network
     depends_on:
       - media_db
+    volumes:
+      - ~/.aspnet/https:/https:ro
         
   media_front:
     container_name: media_front
     image: leolimcav/media-front:1.0
+    build:
+      context: .
+      dockerfile: docker/front.dockerfile.yml
     ports:
-      - "80:80"
+      - "8080:80"
     networks:
       - media_network
     depends_on:
