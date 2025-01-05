@@ -47,10 +47,10 @@ export class AppComponent implements OnInit {
     const createReservation = { ...formData, startDate, endDate }
     console.log(createReservation);
     this.httpClient.post<CreateReservation>("https://localhost:3001/api/reservations", createReservation)
-      .subscribe(
-        (r: CreateReservation) => console.log(r),
-        (err: HttpErrorResponse) => this.handleError(err),
-        () => console.log("Request completed"));
+      .subscribe({
+        next: (r: CreateReservation) => console.log(r),
+        error: (err: HttpErrorResponse) => this.handleError(err),
+        complete: () => console.log("Request completed")});
     this.form.reset();
   }
 
