@@ -5,7 +5,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) => 
+builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
 });
@@ -13,14 +13,14 @@ builder.Host.UseSerilog((context, configuration) =>
 // Add services to the container.
 builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
-builder.Services.AddDbContext<MediaDbContext>(c => 
+builder.Services.AddDbContext<MediaDbContext>(c =>
 {
     c.UseNpgsql(builder.Configuration.GetConnectionString("mediadb"));
 });
 
 builder.Services.AddRepositories();
 
-builder.Services.AddCors(c => 
+builder.Services.AddCors(c =>
 {
     c.AddDefaultPolicy(p =>
     {
@@ -34,9 +34,7 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-app.UseCors();
-
-app.UseFastEndpoints(c => 
+app.UseFastEndpoints(c =>
 {
     c.Endpoints.RoutePrefix = "api";
 });
@@ -50,4 +48,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.Run();
+app.UseCors();
+
+await app.RunAsync().ConfigureAwait(false);
