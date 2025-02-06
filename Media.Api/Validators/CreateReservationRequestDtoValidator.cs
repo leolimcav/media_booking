@@ -30,15 +30,15 @@ public sealed class CreateReservationRequestDtoValidator : Validator<CreateReser
             .WithMessage("start date should not be empty")
             .GreaterThanOrEqualTo(DateTime.UtcNow)
             .WithMessage("start date should be greater than or equal to today");
-        
+
         RuleFor(x => x.EndDate)
             .NotEmpty()
             .WithMessage("end date should not be empty")
             .GreaterThanOrEqualTo(DateTime.UtcNow)
             .WithMessage("end date should be greater than or equal to today");
-        
+
         RuleFor(x => x.EndDate.Day)
-            .Equal(x => x.StartDate.Day)
+            .GreaterThanOrEqualTo(x => x.StartDate.Day)
             .WithMessage("end date day should be equal to start date day");
     }
 }

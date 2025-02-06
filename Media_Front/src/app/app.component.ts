@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 
 @Component({
@@ -19,28 +19,27 @@ export class AppComponent implements OnInit {
 
   reservations: Reservation[] = [];
 
-  form = this.formBuilder.group({
-    name: '',
-    device: '',
-    classroom: '',
-    date: '',
-    startTime: '',
-    endTime: ''
+  reservationForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    device: new FormControl('', Validators.required),
+    classroom: new FormControl('', Validators.required),
+    date: new FormControl('', Validators.required),
+    startTime: new FormControl('', Validators.required),
+    endTime: new FormControl('', Validators.required)
   });
 
   constructor(
-    private formBuilder: FormBuilder,
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getReservations().subscribe(r => this.reservations = r);
   }
 
   createReservation(): void {
-    const formData = this.form.value;
-    const startDate = new Date(`${formData.date}T${formData.startTime}:00`).toUTCString();
-    const endDate = new Date(`${formData.date}T${formData.endTime}:00`).toUTCString();
+    const formData = this.reservationForm.value;
+    const startDate = new Date(`${formData.date}T${formData.startTime}`).toISOString();
+    const endDate = new Date(`${formData.date}T${formData.endTime}`).toISOString();
 
     console.log(startDate, endDate);
 
@@ -50,8 +49,12 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (r: CreateReservation) => console.log(r),
         error: (err: HttpErrorResponse) => this.handleError(err),
-        complete: () => console.log("Request completed")});
-    this.form.reset();
+        complete: () => {
+          console.log("Request completed");
+          this.getReservations().subscribe(r => this.reservations = r);
+        }
+      });
+    this.reservationForm.reset();
   }
 
   handleError(error: HttpErrorResponse) {
@@ -66,12 +69,12 @@ export class AppComponent implements OnInit {
     this.endTimeInputErrors = errors.endTime;
   }
 
-  getReservations() : Observable<Reservation[]> {
+  getReservations(): Observable<Reservation[]> {
     return this.httpClient.get<GetReservationResponse[]>("https://localhost:3001/api/reservations")
       .pipe(
         map(r => {
-          const reservations : Reservation[] = r.map(rs => {
-            const [ startDate, _ ] = rs.startDate.split('T');
+          const reservations: Reservation[] = r.map(rs => {
+            const [startDate, _] = rs.startDate.split('T');
 
             return { ...rs, date: startDate, startTime: rs.startDate, endTime: rs.endDate }
           });
@@ -80,7 +83,7 @@ export class AppComponent implements OnInit {
 
           return reservations;
         })
-    );
+      );
   }
 }
 
