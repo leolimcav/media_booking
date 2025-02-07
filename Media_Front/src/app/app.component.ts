@@ -1,7 +1,9 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReservationService } from './services/reservation.service';
+import { Reservation } from './models/reservation';
+import { CreateReservation } from './models/create-reservation';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,7 @@ import { Observable, map } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'Sistema de Reservas';
+  reservationService = inject(ReservationService)
   nameInputErrors: string[] = [];
   deviceInputErrors: string[] = [];
   classroomInputErrors: string[] = [];
@@ -28,38 +31,11 @@ export class AppComponent implements OnInit {
     endTime: new FormControl('', Validators.required)
   });
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
   ngOnInit() {
-    this.getReservations().subscribe(r => this.reservations = r);
-  }
-
-  createReservation(): void {
-    const formData = this.reservationForm.value;
-    const startDate = new Date(`${formData.date}T${formData.startTime}`).toISOString();
-    const endDate = new Date(`${formData.date}T${formData.endTime}`).toISOString();
-
-    console.log(startDate, endDate);
-
-    const createReservation = { ...formData, startDate, endDate }
-    console.log(createReservation);
-    this.httpClient.post<CreateReservation>("https://localhost:3001/api/reservations", createReservation)
-      .subscribe({
-        next: (r: CreateReservation) => console.log(r),
-        error: (err: HttpErrorResponse) => this.handleError(err),
-        complete: () => {
-          console.log("Request completed");
-          this.getReservations().subscribe(r => this.reservations = r);
-        }
-      });
-    this.reservationForm.reset();
+    this.reservationService.getReservations().subscribe(r => this.reservations = r);
   }
 
   handleError(error: HttpErrorResponse) {
-    console.log("erro aconteceu: ", error.error.errors);
-
     const errors = error.error.errors;
     this.nameInputErrors = errors.name;
     this.deviceInputErrors = errors.device;
@@ -69,47 +45,26 @@ export class AppComponent implements OnInit {
     this.endTimeInputErrors = errors.endTime;
   }
 
-  getReservations(): Observable<Reservation[]> {
-    return this.httpClient.get<GetReservationResponse[]>("https://localhost:3001/api/reservations")
-      .pipe(
-        map(r => {
-          const reservations: Reservation[] = r.map(rs => {
-            const [startDate, _] = rs.startDate.split('T');
+  public submit() {
+    const formData = this.reservationForm.value;
+    const startDate = new Date(`${formData.date}T${formData.startTime}`).toISOString();
+    const endDate = new Date(`${formData.date}T${formData.endTime}`).toISOString();
 
-            return { ...rs, date: startDate, startTime: rs.startDate, endTime: rs.endDate }
-          });
+    const data: CreateReservation = {
+      name: formData.name!,
+      classroom: formData.classroom!,
+      device: formData.device!,
+      startDate,
+      endDate
+    };
 
-          console.log(reservations);
-
-          return reservations;
-        })
-      );
+    this.reservationService.createReservation(data).subscribe({
+      next: (r: CreateReservation) => console.log(r),
+      error: (err: HttpErrorResponse) => this.handleError(err),
+      complete: () => {
+        this.reservationService.getReservations().subscribe(r => this.reservations = r);
+        this.reservationForm.reset();
+      }
+    });
   }
-}
-
-interface CreateReservation {
-  name: string;
-  device: string;
-  classroom: string;
-  startDate: string;
-  endDate: string;
-}
-
-interface GetReservationResponse {
-  id: number;
-  name: string;
-  device: string;
-  classroom: string;
-  startDate: string;
-  endDate: string;
-}
-
-interface Reservation {
-  id: number;
-  name: string;
-  device: string;
-  classroom: string;
-  date: string;
-  startTime: string;
-  endTime: string;
 }
