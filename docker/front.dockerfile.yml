@@ -1,20 +1,22 @@
-FROM node:lts-slim as build-app
+FROM node:lts-slim AS build
 
 WORKDIR /app
 
 COPY ./Media_Front/package.json .
 COPY ./Media_Front/package-lock.json .
 
-RUN npm install
+RUN npm config set strict-ssl false && npm install
 
-COPY ./Media_Front ./
+COPY ./Media_Front/ ./
 
-RUN npm run ng build
+RUN npm run build
 
-FROM nginx:stable
+FROM nginx:stable-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=build-app /app/dist/media-front/ ./
+COPY ./nginx.conf /etc/nginx/
+COPY ./ssl/cert.pem ./cert.pem
+COPY ./ssl/key.pem ./key.pem
 
-EXPOSE 80
+COPY --from=build /app/dist/media-front/browser/ ./

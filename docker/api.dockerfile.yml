@@ -1,17 +1,19 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
-
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY ./Media.Api/ .
+COPY *.sln .
+COPY Media.Api/*.csproj ./Media.Api_build/
+COPY Media.Api/Directory.Packages.props ./Media.Api_build/
+RUN dotnet restore Media.Api_build/Media.Api.csproj
 
-RUN dotnet restore ./Media.Api.csproj
+COPY Media.Api/. ./Media.Api_build/
+WORKDIR /app/Media.Api_build
+RUN dotnet publish -c Release -o /app --no-restore
 
-RUN dotnet publish ./Media.Api.csproj -c Release
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+COPY --from=build /app ./
+COPY ./ssl/cert.pem ./cert.pem
+COPY ./ssl/key.pem ./key.pem
 
-COPY --from=build-env /app/bin/Release/net6.0/ .
-
-ENTRYPOINT ["dotnet", "Media.Api.dll"]
+ENTRYPOINT ["dotnet", "Media.Api.dll", "--urls", "https://*:443", "--Kestrel:Certificates:Default:Path", "/app/cert.pem", "--Kestrel:Certificates:Default:KeyPath", "/app/key.pem"]

@@ -15,20 +15,18 @@ services:
     container_name: media_api
     image: leolimcav/media-api:1.0
     environment:
-      - ASPNETCORE_HTTPS_PORTS=3001
-      - ASPNETCORE_HTTP_PORTS=3000
-    ports:
-      - "3001:3001"
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
-        - media_network
+      - media_network
     depends_on:
       - media_db
-        
+
   media_front:
     container_name: media_front
     image: leolimcav/media-front:1.0
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - media_network
     depends_on:

@@ -50,6 +50,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 
 app.UseHttpsRedirection();
 
+app.UseHealthChecks("/health");
+
 app.UseCors();
 
 await app.RunAsync().ConfigureAwait(false);
