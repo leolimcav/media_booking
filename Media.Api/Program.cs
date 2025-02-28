@@ -30,6 +30,8 @@ builder.Services.AddCors(c =>
     });
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -40,13 +42,15 @@ app.UseFastEndpoints(c =>
 });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwaggerGen();
     app.RunMigrations();
 }
 
 app.UseHttpsRedirection();
+
+app.UseHealthChecks("/health");
 
 app.UseCors();
 
