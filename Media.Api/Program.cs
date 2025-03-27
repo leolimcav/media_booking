@@ -1,6 +1,10 @@
 using Media.Api.Entities;
 using Media.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,15 @@ builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration);
 });
 
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.SetResourceBuilder(
+        ResourceBuilder.CreateDefault()
+        .AddService("media-api"))
+        .AddConsoleExporter()
+        .AddOtlpExporter();
+});
+
 // Add services to the container.
 builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
@@ -17,6 +30,11 @@ builder.Services.AddDbContext<MediaDbContext>(c =>
 {
     c.UseNpgsql(builder.Configuration.GetConnectionString("mediadb"));
 });
+
+builder.Services.AddOpenTelemetry()
+.ConfigureResource(resource => resource.AddService("media-api"))
+.WithTracing(tracing => tracing.AddAspNetCoreInstrumentation().AddConsoleExporter().AddOtlpExporter())
+.WithMetrics(metrics => metrics.AddAspNetCoreInstrumentation().AddConsoleExporter().AddOtlpExporter());
 
 builder.Services.AddRepositories();
 
@@ -36,7 +54,8 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-app.UseFastEndpoints(c =>
+app.UseDefaultExceptionHandler()
+.UseFastEndpoints(c =>
 {
     c.Endpoints.RoutePrefix = "api";
 });
