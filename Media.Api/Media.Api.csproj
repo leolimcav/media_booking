@@ -19,8 +19,11 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Sinks.Console" />
+<<<<<<< Updated upstream
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
     <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all" Condition="$(MSBuildProjectExtension) == '.csproj'" />
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Net" />
