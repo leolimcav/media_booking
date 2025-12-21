@@ -7,8 +7,7 @@ import { CreateReservation } from './domains/reservations/models/create-reservat
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  templateUrl: './app.html',
   standalone: false
 })
 export class AppComponent implements OnInit {
