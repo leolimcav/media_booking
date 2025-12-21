@@ -1,16 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReservationApi } from './core/services/reservation-api';
 import { Reservation } from './domains/reservations/models/reservation';
 import { CreateReservation } from './domains/reservations/models/create-reservation';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  standalone: false
+  imports: [ReactiveFormsModule, DatePipe],
+  standalone: true
 })
-export class AppComponent implements OnInit {
+export class App implements OnInit {
   title = 'Sistema de Reservas';
   reservationService = inject(ReservationApi)
   nameInputErrors: string[] = [];

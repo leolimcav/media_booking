@@ -1,6 +1,8 @@
-import { AppModule } from './app/app.module';
-import { platformBrowser } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { bootstrapApplication, platformBrowser } from '@angular/platform-browser';
+import { App } from './app/app';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-
-platformBrowser().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(App, {
+  providers: [provideHttpClient(), provideZonelessChangeDetection()]
+})
