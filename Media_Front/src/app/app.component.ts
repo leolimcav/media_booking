@@ -1,19 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReservationService } from './services/reservation.service';
-import { Reservation } from './models/reservation';
-import { CreateReservation } from './models/create-reservation';
+import { ReservationApi } from './core/services/reservation-api';
+import { Reservation } from './domains/reservations/models/reservation';
+import { CreateReservation } from './domains/reservations/models/create-reservation';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  standalone: false
 })
 export class AppComponent implements OnInit {
   title = 'Sistema de Reservas';
-  reservationService = inject(ReservationService)
+  reservationService = inject(ReservationApi)
   nameInputErrors: string[] = [];
   deviceInputErrors: string[] = [];
   classroomInputErrors: string[] = [];

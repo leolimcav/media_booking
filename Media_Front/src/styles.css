@@ -61,6 +61,12 @@
     position: static;
   }
 
+  caption {
+    font-size: 0.625rem;
+    font-weight: var(--font-weight-normal);
+    color: var(--color-medium-gray);
+  }
+
   button {
     font-size: var(--text-sm);
     font-weight: var(--font-weight-semibold);
@@ -68,7 +74,7 @@
 
   small,
   span {
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     color: var(--color-medium-gray-2);
   }
