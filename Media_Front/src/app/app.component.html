@@ -13,7 +13,7 @@
       <form class="flex flex-col items-center w-5/12 gap-2" [formGroup]="reservationForm" (ngSubmit)="submit()">
         <div class="flex flex-col w-full">
           <label class="text-xl" for="name">Nome</label>
-          <input class="form-input rounded" placeholder="Fulano de Tal" id="name" type="text" name="name"
+          <input class="form-input rounded-sm" placeholder="Fulano de Tal" id="name" type="text" name="name"
             formControlName="name" autocomplete="off">
           @for (i of nameInputErrors; track i) {
             <div>
@@ -23,7 +23,7 @@
         </div>
         <div class="flex flex-col w-full">
           <label class="text-xl" for="device">Mídia</label>
-          <input class="form-input rounded" placeholder="Projetor 123" id="device" type="text" name="device"
+          <input class="form-input rounded-sm" placeholder="Projetor 123" id="device" type="text" name="device"
             formControlName="device">
           @for (i of deviceInputErrors; track i) {
             <div>
@@ -33,7 +33,7 @@
         </div>
         <div class="flex flex-col w-full">
           <label class="text-xl" for="classroom">Sala</label>
-          <input class="form-input rounded" placeholder="9A" id="classroom" type="text" name="classroom"
+          <input class="form-input rounded-sm" placeholder="9A" id="classroom" type="text" name="classroom"
             formControlName="classroom">
           @for (i of classroomInputErrors; track i) {
             <div>
@@ -44,25 +44,25 @@
         <div class="flex flex-row w-full justify-between">
           <div class="flex flex-col w-1/2">
             <label class="text-xl" for="date">Data</label>
-            <input class="form-input rounded" id="date" type="date" name="date" formControlName="date">
+            <input class="form-input rounded-sm" id="date" type="date" name="date" formControlName="date">
             @for (i of dateInputErrors; track i) {
               <div>
                 <span class="text-rose-600 font-semibold">{{ i }}</span>
               </div>
             }
           </div>
-          <div class="flex flex-col w-1/4 ml-2 mr-2 flex-shrink-1">
+          <div class="flex flex-col w-1/4 ml-2 mr-2 shrink">
             <label class="text-xl" for="startTime">Hora Inicial</label>
-            <input class="form-input rounded" id="startTime" type="time" name="startTime" formControlName="startTime">
+            <input class="form-input rounded-sm" id="startTime" type="time" name="startTime" formControlName="startTime">
             @for (i of dateInputErrors; track i) {
               <div>
                 <span class="text-rose-600 font-semibold">{{ i }}</span>
               </div>
             }
           </div>
-          <div class="flex flex-col w-1/4 flex-shrink-1">
+          <div class="flex flex-col w-1/4 shrink">
             <label class="text-xl" for="endTime">Hora Final</label>
-            <input class="form-input rounded" id="endTime" type="time" name="endTime" formControlName="endTime">
+            <input class="form-input rounded-sm" id="endTime" type="time" name="endTime" formControlName="endTime">
             @for (i of dateInputErrors; track i) {
               <div>
                 <span class="text-rose-600 font-semibold">{{ i }}</span>
@@ -70,7 +70,7 @@
             }
           </div>
         </div>
-        <button class="self-end bg-blue-500 w-20 h-10 rounded font-semibold text-white" type="submit">Reservar</button>
+        <button class="self-end bg-blue-500 w-20 h-10 rounded-sm font-semibold text-white" type="submit">Reservar</button>
       </form>
       <table class="table-auto w-3/5 border border-black border-collapse">
         <thead class="border border-black h-10">
