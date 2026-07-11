@@ -28,6 +28,6 @@ public sealed class GetReservationsEndpoint : EndpointWithoutRequest<IEnumerable
 
         var response = reservations.Select(e => new GetReservationsResponseDto(e.Name, e.Device, e.Classroom, TimeZoneInfo.ConvertTimeBySystemTimeZoneId(e.StartDate, clientSideTimezone.Id), TimeZoneInfo.ConvertTimeBySystemTimeZoneId(e.EndDate, clientSideTimezone.Id)));
 
-        await SendOkAsync(response, cancellation: ct).ConfigureAwait(false);
+        await Send.OkAsync(response, cancellation: ct).ConfigureAwait(false);
     }
 }

@@ -30,6 +30,6 @@ public sealed class CreateReservationEndpoint : Endpoint<CreateReservationReques
 
         var res = await Map.FromEntityAsync(createdReservation, ct).ConfigureAwait(false);
 
-        await SendCreatedAtAsync("/reservations", new { res.Id }, res, cancellation: ct).ConfigureAwait(false);
+        await Send.CreatedAtAsync("/reservations", new { res.Id }, res, cancellation: ct).ConfigureAwait(false);
     }
 }
