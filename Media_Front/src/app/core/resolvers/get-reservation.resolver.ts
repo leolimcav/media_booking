@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { Reservation } from 'src/app/domains/reservations/models/reservation';
+import { Reservation } from '../../domains/reservations/models/reservation';
 import { ReservationApi } from '../services/reservation-api';
 
 export const getReservationResolver: ResolveFn<Reservation[]> = (route, state) => {

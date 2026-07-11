@@ -4,7 +4,7 @@ import { Component, inject, input, linkedSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ReservationApi } from 'src/app/core/services/reservation-api';
+import { ReservationApi } from '../../core/services/reservation-api';
 import { CreateReservation } from './models/create-reservation';
 import { Reservation } from './models/reservation';
 

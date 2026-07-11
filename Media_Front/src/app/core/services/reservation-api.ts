@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { CreateReservation } from '../../domains/reservations/models/create-reservation';
 import { GetReservation } from '../../domains/reservations/models/get-reservation';
 import { Reservation } from '../../domains/reservations/models/reservation';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
