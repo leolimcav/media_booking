@@ -11,7 +11,7 @@ services:
     networks:
       - media_network
     volumes:
-      - media_volume:/var/lib/postgresql/data
+      - media_volume:/var/lib/postgresql
 
   media_api:
     container_name: media_api
