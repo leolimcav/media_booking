@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Media_Front
+        working-directory: .
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: Media_Front/package-lock.json
       - name: Install
         run: npm ci
       - name: Build
