@@ -2,16 +2,16 @@ namespace Media.Api.Endpoints.Devices;
 
 public sealed class GetDeviceByIdEndpoint : EndpointWithoutRequest<long>
 {
-    public override void Configure() 
+    public override void Configure()
     {
         Get("/devices/{deviceId}");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CancellationToken ct) 
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var deviceId = Route<long>("deviceId");
 
-        await SendAsync(deviceId, cancellation: ct).ConfigureAwait(false);
+        await Send.OkAsync(deviceId, cancellation: ct).ConfigureAwait(false);
     }
 }
